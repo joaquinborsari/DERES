@@ -1,0 +1,68 @@
+# Archivos y directorios generados por Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub/
+build/
+build/web/
+.dartdev/
+.idea/
+.vscode/
+*.iml
+*.log
+/.metadata
+flutter_export_environment.sh
+
+# Dependencias específicas de Flutter
+/.flutter-plugins
+/.flutter-plugins-dependencies
+
+# Dependencias generadas por pub
+/.packages
+
+# Dependencias generadas por la plataforma Android
+/android/app/build/
+/android/app/outputs/
+/android/build/
+/android/gradle/
+/android/local.properties
+/android/gradlew
+/android/gradlew.bat
+/android/*.iml
+
+# Dependencias generadas por la plataforma iOS
+/ios/Pods/
+/ios/Podfile.lock
+/ios/Podfile.workspace.lock
+/ios/Pods
+/ios/*.xcworkspace/
+/ios/Flutter/Flutter.xcconfig
+/ios/Flutter/App.framework
+/ios/Flutter/Flutter.podspec
+/ios/Flutter/Generated.xcconfig
+/ios/Flutter/app.flx
+/ios/Flutter/app.framework
+/ios/Flutter/app.vd
+/ios/Flutter/app_assets.stamp
+/ios/Flutter/flutter_assets/
+/ios/Flutter/flutter_export_environment.sh
+/ios/Flutter/flutter_exported_sim_state.plist
+
+# Dependencias generadas por la plataforma web
+/web/build/
+/web/packages/
+/web/pubspec.lock
+
+# Dependencias generadas por Firebase (si se usa)
+/firebase/
+/firebase/firebase_config.dart
+/firebase/firebase_credentials.json
+
+# Dependencias generadas por Google Cloud (si se usa)
+/.google/
+/google_cloud/
+/google_cloud/google_credentials.json
+
+# Dependencias generadas por Visual Studio Code (si se usa)
+.vscode/
