@@ -87,6 +87,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       theme: ThemeData(
+        indicatorColor: Colors.orange,
         fontFamily: 'Montserrat',
         appBarTheme: const AppBarTheme(color: Colors.orange),
         colorScheme: ColorScheme.fromSwatch(
