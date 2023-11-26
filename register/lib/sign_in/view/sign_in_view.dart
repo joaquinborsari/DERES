@@ -64,7 +64,7 @@ class SignInView extends StatelessWidget {
         body: Center(
           child: Container(
             width: 800,
-            height: 400,
+            height: 500,
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -78,6 +78,7 @@ class SignInView extends StatelessWidget {
               ],
             ),
             child: const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -159,6 +160,22 @@ class EmailTextField extends StatelessWidget {
   }
 }
 
+class UserNameTextField extends StatelessWidget {
+  const UserNameTextField({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      onChanged: (value) =>
+          context.read<SignInBloc>().add(SignInUserNameChanged(value)),
+      decoration: const InputDecoration(
+        hintText: 'Username',
+      ),
+      keyboardType: TextInputType.emailAddress,
+    );
+  }
+}
+
 class PasswordTextField extends StatelessWidget {
   const PasswordTextField({super.key});
 
@@ -234,15 +251,13 @@ class SignInButton extends StatelessWidget {
     final validToSubmit = context.select((SignInBloc bloc) => bloc.valid);
 
     return OutlinedButton(
-      onPressed: () {
-        validToSubmit
-            ? () {
-                context
-                    .read<SignInBloc>()
-                    .add(const SignInWithEmailAndPasswordRequested());
-              }
-            : null;
-      },
+      onPressed: validToSubmit
+          ? () {
+              context
+                  .read<SignInBloc>()
+                  .add(const SignInWithEmailAndPasswordRequested());
+            }
+          : null,
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white,
         backgroundColor: Colors.orangeAccent,

@@ -20,6 +20,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       _onSignInWithEmailAndPasswordRequested,
     );
     on<SignInPrivilageChanged>(_onSignInPrivilageChanged);
+    on<SignInUserNameChanged>(_onUserNameChanged);
   }
 
   bool get valid =>
@@ -54,7 +55,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       final body = jsonEncode({
         "user_name": state.email.value,
         "password": state.password.value,
-        "privilege": state.privilege.name,
+        "privilege": state.privilege.name.toUpperCase(),
+        "email": state.email.value,
       });
 
       try {
@@ -121,5 +123,10 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   FutureOr<void> _onSignInPrivilageChanged(
       SignInPrivilageChanged event, Emitter<SignInState> emit) {
     emit((state.copyWith(privilege: event.privilage)));
+  }
+
+  FutureOr<void> _onUserNameChanged(
+      SignInUserNameChanged event, Emitter<SignInState> emit) {
+    emit(state.copyWith(username: event.username));
   }
 }

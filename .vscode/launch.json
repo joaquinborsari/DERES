@@ -1,0 +1,60 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Front_DERES",
+            "cwd": "Front_DERES",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "Front_DERES (profile mode)",
+            "cwd": "Front_DERES",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "Front_DERES (release mode)",
+            "cwd": "Front_DERES",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "register",
+            "cwd": "register",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "register (profile mode)",
+            "cwd": "register",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "register (release mode)",
+            "cwd": "register",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "form_inputs",
+            "cwd": "Front_DERES/lib/form_inputs",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "form_inputs",
+            "cwd": "register/lib/form_inputs",
+            "request": "launch",
+            "type": "dart"
+        }
+    ]
+}

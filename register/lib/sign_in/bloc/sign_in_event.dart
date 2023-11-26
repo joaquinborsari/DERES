@@ -14,6 +14,15 @@ class SignInEmailChanged extends SignInEvent {
   List<Object?> get props => [email];
 }
 
+class SignInUserNameChanged extends SignInEvent {
+  const SignInUserNameChanged(this.username);
+
+  final String username;
+
+  @override
+  List<Object?> get props => [username];
+}
+
 class SignInPasswordChanged extends SignInEvent {
   const SignInPasswordChanged(this.password);
 
