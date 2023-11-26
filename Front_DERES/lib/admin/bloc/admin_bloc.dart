@@ -31,6 +31,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
   FutureOr<void> _onAdminQuestionSubmitted(
       AdminQuestionSubmitted event, Emitter<AdminState> emit) async {
     try {
+      emit(state.copyWith(status: AdminStatus.inProgress));
       final url = Uri.parse(
         'http://172.178.74.246:8080/addQuestion',
       );
@@ -45,6 +46,19 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       );
       if (response.statusCode == 201) {
         emit(state.copyWith(status: AdminStatus.pollSuccess));
+        final url = Uri.parse(
+          'http://172.178.74.246:8080/send-mails',
+        );
+
+        final response = await client.post(
+          url,
+          headers: {'Content-Type': 'application/json'},
+        );
+        if (response.statusCode == 201) {
+          emit(state.copyWith(status: AdminStatus.success));
+        } else {
+          emit(state.copyWith(status: AdminStatus.failure));
+        }
       } else {
         emit(state.copyWith(status: AdminStatus.failure));
       }
@@ -63,6 +77,8 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     final newListOfQuestion = List<Question>.from(state.questions)
       ..add(newQuestion);
     List<Poll> updatedPolls = [];
+    bool isQuestionTypePresent = false;
+
     for (var poll in state.poll) {
       if (poll.questionType == state.questionType) {
         List<Question> newQuestions = List.from(poll.questions)
@@ -71,9 +87,16 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
         Poll updatedPoll =
             Poll(questions: newQuestions, questionType: poll.questionType);
         updatedPolls.add(updatedPoll);
+        isQuestionTypePresent = true;
       } else {
         updatedPolls.add(poll);
       }
+    }
+
+    if (!isQuestionTypePresent) {
+      Poll newPoll =
+          Poll(questions: [newQuestion], questionType: state.questionType);
+      updatedPolls.add(newPoll);
     }
 
     emit(state.copyWith(poll: updatedPolls, questions: newListOfQuestion));
@@ -93,12 +116,32 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
 
   Future<void> _onAdminEditQuestion(
       AdminEditQuestion event, Emitter<AdminState> emit) async {
-    List<Poll> updatedPolls = state.poll.map((poll) {
-      List<Question> updatedQuestions = poll.questions.map((question) {
-        final ponderation = state.calculatePonderation();
-        // if (ponderation![event.questionType]! + int.parse(event.ponderation) <=
-        //     100) {
+    List<Poll> updatedPolls = [];
+    int totalPonderation = 0;
+
+    for (var poll in state.poll) {
+      List<Question> updatedQuestions = [];
+
+      // Calculate the total ponderation for questions of the same type
+      // excluding the one being edited.
+      if (poll.questionType == event.questionType) {
+        for (var question in poll.questions) {
+          if (question.id != event.questionId) {
+            totalPonderation += int.parse(question.ponderation);
+          }
+        }
+      }
+
+      for (var question in poll.questions) {
         if (question.id == event.questionId) {
+          int newPonderation = int.parse(event.ponderation) + totalPonderation;
+
+          // Check if the new ponderation exceeds the limit
+          if (newPonderation > 100) {
+            emit(state.copyWith(status: AdminStatus.failure));
+            return;
+          }
+
           final newQuestion = Question(
             questionText: question.questionText,
             type: question.type,
@@ -106,18 +149,17 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
             id: question.id,
           );
           _editQuestion(newQuestion);
-          return newQuestion;
-          // }
+          updatedQuestions.add(newQuestion);
+        } else {
+          updatedQuestions.add(question);
         }
+      }
 
-        return question;
-      }).toList();
-
-      return Poll(
+      updatedPolls.add(Poll(
         questions: updatedQuestions,
         questionType: poll.questionType,
-      );
-    }).toList();
+      ));
+    }
 
     emit(state.copyWith(
       poll: updatedPolls,

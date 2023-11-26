@@ -114,7 +114,7 @@ class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
     var url = Uri.parse(
         'http://172.178.74.246:8080/providers/$providerRut'); // Reemplaza con la URL de tu API
     var response = await http.get(url);
-
+    emit(state.copyWith(status: CompanyStatus.inProgress));
     if (response.statusCode == 202) {
       final data = jsonDecode(response.body);
       final companyData = CompanyData(
@@ -124,6 +124,7 @@ class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
         phone: data['phone'],
         rut: data['rut'],
         score: data['score'] ?? 0,
+        type: data['type'],
       );
       emit(state.copyWith(companyData: companyData));
     } else {

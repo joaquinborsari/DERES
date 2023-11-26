@@ -5,6 +5,7 @@ class CompanyData {
   String address;
   String phone;
   String score;
+  String type;
 
   CompanyData({
     required this.name,
@@ -13,6 +14,7 @@ class CompanyData {
     required this.address,
     required this.phone,
     required this.score,
+    required this.type,
   });
 
   static CompanyData empty() {
@@ -23,6 +25,7 @@ class CompanyData {
       address: '',
       phone: '',
       score: '',
+      type: '',
     );
   }
 }

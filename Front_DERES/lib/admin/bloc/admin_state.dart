@@ -101,13 +101,10 @@ class AdminState extends Equatable {
         int currentPonderation = int.tryParse(question.ponderation) ?? 0;
         int existingPonderation = typePonderationSum[question.type] ?? 0;
 
-        // Verificar si sumar la nueva ponderación excedería el límite de 100
         if (existingPonderation + currentPonderation > 100) {
-          // Si se excede el límite, no sumar la nueva ponderación
           continue;
         }
 
-        // Sumar la nueva ponderación
         typePonderationSum[question.type] =
             existingPonderation + currentPonderation;
       }

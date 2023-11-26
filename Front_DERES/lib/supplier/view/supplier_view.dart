@@ -17,25 +17,39 @@ class SupplierView extends StatelessWidget {
             context.go(HomePage.path);
           },
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                width: 40.0,
-                height: 40.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 3),
-                  image: const DecorationImage(
-                      image: AssetImage('lib/assets/deres.png'),
-                      fit: BoxFit.cover,
-                      scale: 2),
+              Row(
+                children: [
+                  Container(
+                    width: 40.0,
+                    height: 40.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 3),
+                      image: const DecorationImage(
+                          image: AssetImage('lib/assets/deres.png'),
+                          fit: BoxFit.cover,
+                          scale: 2),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  const Text(
+                    'Proveedores',
+                  ),
+                ],
+              ),
+              GestureDetector(
+                child: const Padding(
+                  padding: EdgeInsets.only(right: 20),
+                  child: Icon(Icons.logout),
                 ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              const Text(
-                'Proveedores',
-              ),
+                onTap: () {
+                  context.go(HomePage.path);
+                },
+              )
             ],
           ),
         ),

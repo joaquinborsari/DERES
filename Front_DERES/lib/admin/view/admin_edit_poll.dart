@@ -33,6 +33,15 @@ class AdminPollPage extends Page<void> {
               ));
               return context.go(AdminPage.path);
             }
+            if (state.status == AdminStatus.failure) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                backgroundColor: Colors.redAccent,
+                content: Text(
+                  'La ponderación debe ser 100%',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                ),
+              ));
+            }
           },
           listenWhen: (previous, current) {
             return previous.status != current.status;

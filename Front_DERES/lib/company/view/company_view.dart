@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:topicos/company/bloc/company_bloc.dart';
 import 'package:topicos/company/bloc/company_state.dart';
+import 'package:topicos/company/model/company_data.dart';
 import 'package:topicos/company/view/company_poll.dart';
 import 'package:topicos/home/view/home_page.dart';
 
@@ -18,25 +19,39 @@ class CompanyView extends StatelessWidget {
             context.go(HomePage.path);
           },
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                width: 40.0,
-                height: 40.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 3),
-                  image: const DecorationImage(
-                      image: AssetImage('lib/assets/deres.png'),
-                      fit: BoxFit.cover,
-                      scale: 2),
+              Row(
+                children: [
+                  Container(
+                    width: 40.0,
+                    height: 40.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 3),
+                      image: const DecorationImage(
+                          image: AssetImage('lib/assets/deres.png'),
+                          fit: BoxFit.cover,
+                          scale: 2),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  const Text(
+                    'Proveedor',
+                  ),
+                ],
+              ),
+              GestureDetector(
+                child: const Padding(
+                  padding: EdgeInsets.only(right: 20),
+                  child: Icon(Icons.logout),
                 ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              const Text(
-                'Proveedor',
-              ),
+                onTap: () {
+                  context.go(HomePage.path);
+                },
+              )
             ],
           ),
         ),
@@ -58,7 +73,9 @@ class CompanyView extends StatelessWidget {
                 return previous.companyData != current.companyData;
               },
               builder: (context, state) {
-                return const _DataCompany();
+                return _DataCompany(
+                  companyData: state.companyData,
+                );
               },
             )
           ],
@@ -69,12 +86,12 @@ class CompanyView extends StatelessWidget {
 }
 
 class _DataCompany extends StatelessWidget {
-  const _DataCompany();
+  const _DataCompany({required this.companyData});
+
+  final CompanyData companyData;
 
   @override
   Widget build(BuildContext context) {
-    final companyData =
-        context.select((CompanyBloc bloc) => bloc.state.companyData);
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -94,8 +111,8 @@ class _DataCompany extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: TextFormField(
-                  initialValue: companyData.name,
                   decoration: const InputDecoration(labelText: 'Nombre'),
+                  controller: TextEditingController(text: companyData.name),
                   onChanged: (value) => (),
                   validator: (value) =>
                       value!.isEmpty ? 'Campo obligatorio' : null,
@@ -104,8 +121,8 @@ class _DataCompany extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: TextFormField(
-                  initialValue: companyData.rut,
                   decoration: const InputDecoration(labelText: 'Razón Social'),
+                  controller: TextEditingController(text: companyData.rut),
                   onChanged: (value) => (),
                   validator: (value) =>
                       value!.isEmpty ? 'Campo obligatorio' : null,
@@ -114,7 +131,7 @@ class _DataCompany extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: TextFormField(
-                  initialValue: companyData.address,
+                  controller: TextEditingController(text: companyData.address),
                   decoration: const InputDecoration(labelText: 'Dirección'),
                   onChanged: (value) => (),
                   validator: (value) =>
@@ -124,7 +141,7 @@ class _DataCompany extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: TextFormField(
-                  initialValue: companyData.phone,
+                  controller: TextEditingController(text: companyData.phone),
                   decoration: const InputDecoration(labelText: 'Teléfono'),
                   onChanged: (value) => (),
                   validator: (value) =>
@@ -134,7 +151,7 @@ class _DataCompany extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: TextFormField(
-                  initialValue: companyData.email,
+                  controller: TextEditingController(text: companyData.email),
                   decoration:
                       const InputDecoration(labelText: 'Email de Contacto'),
                   onChanged: (value) => (),
@@ -145,9 +162,9 @@ class _DataCompany extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: TextFormField(
-                  initialValue: companyData.phone,
+                  controller: TextEditingController(text: companyData.type),
                   decoration:
-                      const InputDecoration(labelText: 'Persona de Contacto'),
+                      const InputDecoration(labelText: 'Tipo de Empresa'),
                   onChanged: (value) => (),
                   validator: (value) =>
                       value!.isEmpty ? 'Campo obligatorio' : null,
