@@ -30,7 +30,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginWithEmailAndPasswordRequested event,
     Emitter<LoginState> emit,
   ) async {
-    final url = Uri.parse('http://172.178.74.246:8080/login');
+    final url = Uri.parse('http://localhost:8080/login');
 
     final body = jsonEncode(
         {'name': state.email.value, 'password': state.password.value});

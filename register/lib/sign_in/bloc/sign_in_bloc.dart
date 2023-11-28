@@ -58,7 +58,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   ) async {
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
-      final url = Uri.parse('http://172.178.74.246:8080/signup');
+      final url = Uri.parse('http://localhost:8080/signup');
       if (state.privilege == Privilege.user) {
         final body = jsonEncode({
           "name": state.email.value,
@@ -128,7 +128,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
   FutureOr<void> _onSignInDataChanged(
       SignInDataChanged event, Emitter<SignInState> emit) async {
-    final url = Uri.parse('http://172.178.74.246:8080/addProvider');
+    final url = Uri.parse('http://localhost:8080/addProvider');
     try {
       final body = jsonEncode({
         "name": state.username,
@@ -148,7 +148,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       if (response.statusCode == 201) {
         final data = jsonDecode(response.body);
         final providerId = data['provider_id'];
-        final url = Uri.parse('http://172.178.74.246:8080/signup');
+        final url = Uri.parse('http://localhost:8080/signup');
         final body = jsonEncode({
           "name": state.email.value,
           "password": state.password.value,

@@ -33,7 +33,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     try {
       emit(state.copyWith(status: AdminStatus.inProgress));
       final url = Uri.parse(
-        'http://172.178.74.246:8080/addQuestion',
+        'http://localhost:8080/addQuestion',
       );
       var client = http.Client();
 
@@ -47,7 +47,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       if (response.statusCode == 201) {
         emit(state.copyWith(status: AdminStatus.pollSuccess));
         final url = Uri.parse(
-          'http://172.178.74.246:8080/send-mails',
+          'http://localhost:8080/send-mails',
         );
 
         final response = await client.post(
@@ -167,7 +167,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
   }
 
   Future<int> _editQuestion(Question question) async {
-    final url = Uri.parse('http://172.178.74.246:8080/modifyQuestion');
+    final url = Uri.parse('http://localhost:8080/modifyQuestion');
     var client = http.Client();
     final body = jsonEncode(question);
     final response = await client.patch(
@@ -180,7 +180,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
 }
 
 Future<List<Poll>> fetchPolls() async {
-  final url = Uri.parse('http://172.178.74.246:8080/questions');
+  final url = Uri.parse('http://localhost:8080/questions');
   final response = await http.get(url);
 
   if (response.statusCode == 202) {

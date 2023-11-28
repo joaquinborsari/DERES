@@ -40,7 +40,7 @@ class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
 
   Future<Map<int, bool>> getAnswers() async {
     final providerRut = await getProviderId();
-    var url = Uri.parse('http://172.178.74.246:8080/answers/$providerRut');
+    var url = Uri.parse('http://localhost:8080/answers/$providerRut');
     var response = await http.get(url);
     if (response.statusCode == 202) {
       List<dynamic> data = jsonDecode(response.body);
@@ -72,7 +72,7 @@ class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
   FutureOr<void> _onQuestionSubmitted(
       CompanyQuestionSubmitted event, Emitter<CompanyState> emit) async {
     final providerRut = await getProviderId();
-    var url = Uri.parse('http://172.178.74.246:8080/answers/$providerRut');
+    var url = Uri.parse('http://localhost:8080/answers/$providerRut');
     var client = http.Client();
     final json = await createListFromMap(state.selectedQuestions);
     final body = jsonEncode({'questions': json});
@@ -112,7 +112,7 @@ class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
       CompanyInformationRequest event, Emitter<CompanyState> emit) async {
     final providerRut = await getProviderId();
     var url = Uri.parse(
-        'http://172.178.74.246:8080/providers/$providerRut'); // Reemplaza con la URL de tu API
+        'http://localhost:8080/providers/$providerRut'); // Reemplaza con la URL de tu API
     var response = await http.get(url);
     emit(state.copyWith(status: CompanyStatus.inProgress));
     if (response.statusCode == 202) {

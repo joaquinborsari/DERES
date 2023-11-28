@@ -45,7 +45,7 @@ class SupplierBloc extends Bloc<SupplierEvent, SupplierState> {
 
   Future<List<Supplier>> fetchSuppliers() async {
     final response =
-        await http.get(Uri.parse('http://172.178.74.246:8080/providers'));
+        await http.get(Uri.parse('http://localhost:8080/providers'));
 
     if (response.statusCode == 202) {
       List<dynamic> jsonResponse = jsonDecode(
