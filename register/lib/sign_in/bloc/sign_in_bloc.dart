@@ -75,20 +75,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
           );
 
           if (response.statusCode == 202) {
-            final privilege = jsonDecode(response.body)['privilege'];
-            if (privilege == 'USER') {
-              emit(state.copyWith(
-                  status: FormzSubmissionStatus.success,
-                  privilege: Privilege.user));
-            } else if (privilege == 'ADMIN') {
-              emit(state.copyWith(
-                  status: FormzSubmissionStatus.success,
-                  privilege: Privilege.admin));
-            } else if (privilege == 'PROVIDER') {
-              emit(state.copyWith(
-                  status: FormzSubmissionStatus.success,
-                  privilege: Privilege.provider));
-            }
+            emit(state.copyWith(status: FormzSubmissionStatus.success));
           } else {
             emit(state.copyWith(status: FormzSubmissionStatus.failure));
           }
