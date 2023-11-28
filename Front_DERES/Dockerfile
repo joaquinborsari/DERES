@@ -1,35 +1,40 @@
-FROM ubuntu:20.04 AS build
+# Utiliza una imagen específica de Flutter de Cirrus CI como base
+FROM cirrusci/flutter:stable AS builder
 
-ENV CONTAINER_TIMEZONE=America/Montevideo
-RUN ln -snf /usr/share/zoneinfo/$CONTAINER_TIMEZONE /etc/localtime && echo $CONTAINER_TIMEZONE > /etc/timezone
+# Crear un nuevo usuario para evitar ejecutar como root
+RUN useradd -ms /bin/bash flutteruser
 
-RUN apt-get update 
-RUN apt-get install -y curl git wget unzip libgconf-2-4 gdb libstdc++6 libglu1-mesa fonts-droid-fallback 
-lib32stdc++6 python3
-RUN apt-get clean
+# Cambiar los permisos del directorio de Flutter
+USER root
+RUN chown -R flutteruser:flutteruser /sdks/flutter
 
-# download Flutter SDK from Flutter Github repo
-RUN git clone https://github.com/flutter/flutter.git /usr/local/flutter
+# Cambiar al usuario flutteruser
+USER flutteruser
 
-# Set flutter environment path
-ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PATH}"
+# Establece el directorio de trabajo para el contenedor
+WORKDIR /app
 
-# Run flutter doctor
-RUN flutter doctor
+# Copia los archivos del proyecto Flutter al contenedor
+COPY --chown=flutteruser:flutteruser . /app
 
-# Enable flutter web
-RUN flutter channel master
-RUN flutter upgrade
-RUN flutter config --enable-web
+# Muestra la versión de Flutter y Dart para depuración
+RUN flutter --version
+RUN dart --version
 
-# Copy files to container and build
-RUN mkdir /app/
-COPY . /app/
-WORKDIR /app/
+# Obtén las dependencias del proyecto Flutter
+RUN flutter pub get
+
+# Compila la aplicación para la web
 RUN flutter build web
 
-# Record the exposed port
-EXPOSE 5000
+# Utiliza una imagen ligera de Nginx para servir la aplicación construida
+FROM nginx:alpine
 
-FROM nginx:1.21.0-alpine
-COPY --from=build /app/build/web /usr/share/nginx/html
+# Copia la aplicación web compilada al directorio de Nginx
+COPY --from=builder /app/build/web /usr/share/nginx/html
+
+# Expone el puerto que utiliza Nginx (80 por defecto)
+EXPOSE 80
+
+# Comando para iniciar Nginx y servir la aplicación
+CMD ["nginx", "-g", "daemon off;"]
