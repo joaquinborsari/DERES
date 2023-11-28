@@ -1,40 +1,22 @@
-# Utiliza una imagen específica de Flutter de Cirrus CI como base
-FROM cirrusci/flutter:stable AS builder
-
-# Crear un nuevo usuario para evitar ejecutar como root
-RUN useradd -ms /bin/bash flutteruser
-
-# Cambiar los permisos del directorio de Flutter
-USER root
-RUN chown -R flutteruser:flutteruser /sdks/flutter
-
-# Cambiar al usuario flutteruser
-USER flutteruser
-
-# Establece el directorio de trabajo para el contenedor
-WORKDIR /app
-
-# Copia los archivos del proyecto Flutter al contenedor
-COPY --chown=flutteruser:flutteruser . /app
-
-# Muestra la versión de Flutter y Dart para depuración
-RUN flutter --version
-RUN dart --version
-
-# Obtén las dependencias del proyecto Flutter
-RUN flutter pub get
-
-# Compila la aplicación para la web
+#Stage 1 - Install dependencies and build the app in a build environment
+FROM debian:latest AS build-env
+# Install flutter dependencies
+RUN apt-get update
+RUN apt-get install -y curl git wget unzip libgconf-2-4 gdb libstdc++6 libglu1-mesa fonts-droid-fallback python3 sed
+RUN apt-get clean
+# Clone the flutter repo
+RUN git clone https://github.com/flutter/flutter.git /usr/local/flutter
+# Set flutter path
+ENV PATH="${PATH}:/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin"
+# Run flutter doctor
+RUN flutter doctor -v
+RUN flutter channel master
+RUN flutter upgrade
+# Copy files to container and build
+RUN mkdir /app/
+COPY . /app/
+WORKDIR /app/
 RUN flutter build web
-
-# Utiliza una imagen ligera de Nginx para servir la aplicación construida
-FROM nginx:alpine
-
-# Copia la aplicación web compilada al directorio de Nginx
-COPY --from=builder /app/build/web /usr/share/nginx/html
-
-# Expone el puerto que utiliza Nginx (80 por defecto)
-EXPOSE 80
-
-# Comando para iniciar Nginx y servir la aplicación
-CMD ["nginx", "-g", "daemon off;"]
+# Stage 2 - Create the run-time image
+FROM nginx:1.21.1-alpine
+COPY --from=build-env /app/build/web /usr/share/nginx/html

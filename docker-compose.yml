@@ -4,9 +4,20 @@ services:
     networks:
       - default
     ports:
-      - 46000:46000
+      - 46000:80
     build: 
       context: ./Front_DERES
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+  
+  register:
+    networks:
+      - default
+    ports:
+      - 46001:80
+    build: 
+      context: ./register
       dockerfile: Dockerfile
     volumes:
       - .:/app
