@@ -150,7 +150,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         final providerId = data['provider_id'];
         final url = Uri.parse('http://172.178.74.246:8080/signup');
         final body = jsonEncode({
-          "user_name": state.email.value,
+          "name": state.email.value,
           "password": state.password.value,
           "privilege": state.privilege.name.toUpperCase(),
           "provider_id": providerId,

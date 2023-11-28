@@ -17,7 +17,10 @@ class SignInView extends StatelessWidget {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
-              const SnackBar(content: Text('Account registered successfully')),
+              const SnackBar(
+                content: Text('Cuenta registrada satisfactoriamente'),
+                backgroundColor: Colors.orange,
+              ),
             );
           if (context.canPop()) {
             context.pop();
