@@ -1,0 +1,16 @@
+version: '3'
+services:
+  front:
+    networks:
+      - default
+    ports:
+      - 46000:46000
+    build: 
+      context: ./Front_DERES
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+
+networks:
+  default:
+    driver: bridge
