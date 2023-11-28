@@ -17,18 +17,28 @@ class SignInState extends Equatable {
     required this.obscurePasswords,
     required this.privilege,
     required this.username,
+    required this.address,
+    required this.contact,
+    required this.phone,
+    required this.rut,
+    required this.type,
   });
 
   const SignInState.initial()
       : this(
-          status: FormzSubmissionStatus.initial,
-          email: const Email.pure(),
-          password: const Password.pure(),
-          confirmationPassword: '',
-          privilege: Privilege.undefined,
-          obscurePasswords: true,
-          username: '',
-        );
+            status: FormzSubmissionStatus.initial,
+            email: const Email.pure(),
+            password: const Password.pure(),
+            confirmationPassword: '',
+            privilege: Privilege.undefined,
+            obscurePasswords: true,
+            username: '',
+            address: '',
+            contact: '',
+            rut: '',
+            type: '',
+            phone: '');
+
   final FormzSubmissionStatus status;
   final Email email;
   final Password password;
@@ -36,6 +46,11 @@ class SignInState extends Equatable {
   final bool obscurePasswords;
   final Privilege privilege;
   final String username;
+  final String rut;
+  final String type;
+  final String contact;
+  final String phone;
+  final String address;
 
   SignInState copyWith({
     FormzSubmissionStatus? status,
@@ -45,6 +60,11 @@ class SignInState extends Equatable {
     bool? obscurePasswords,
     Privilege? privilege,
     String? username,
+    String? phone,
+    String? rut,
+    String? type,
+    String? contact,
+    String? address,
   }) {
     return SignInState(
       status: status ?? this.status,
@@ -54,6 +74,11 @@ class SignInState extends Equatable {
       password: password ?? this.password,
       privilege: privilege ?? this.privilege,
       username: username ?? this.username,
+      phone: phone ?? this.phone,
+      rut: rut ?? this.rut,
+      type: type ?? this.type,
+      contact: contact ?? this.contact,
+      address: address ?? this.address,
     );
   }
 
@@ -66,5 +91,10 @@ class SignInState extends Equatable {
         obscurePasswords,
         privilege,
         username,
+        address,
+        phone,
+        rut,
+        type,
+        contact,
       ];
 }

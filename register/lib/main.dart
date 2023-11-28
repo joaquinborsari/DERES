@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:register/sign_in/view/sign_in_route.dart';
+import 'package:register/sign_in/sign_in.dart';
+import 'package:register/sign_in/view/provider_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -9,10 +11,23 @@ void main() {
 final GoRouter _router = GoRouter(
   initialLocation: SignInPage.path,
   routes: [
-    GoRoute(
-      path: SignInPage.path,
-      pageBuilder: (context, state) => const SignInPage(),
-    ),
+    ShellRoute(
+        builder: (context, state, child) {
+          return BlocProvider<SignInBloc>(
+            create: (ctx) => SignInBloc(),
+            child: child,
+          );
+        },
+        routes: [
+          GoRoute(
+            path: SignInPage.path,
+            pageBuilder: (context, state) => const SignInPage(),
+          ),
+          GoRoute(
+            path: ProviderPage.path,
+            pageBuilder: (context, state) => const ProviderPage(),
+          ),
+        ])
   ],
 );
 

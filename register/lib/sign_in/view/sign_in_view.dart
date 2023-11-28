@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
 import 'package:register/sign_in/sign_in.dart';
+import 'package:register/sign_in/view/provider_view.dart';
 
 class SignInView extends StatelessWidget {
   const SignInView({super.key});
@@ -248,15 +249,20 @@ class SignInButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final validToSubmit = context.select((SignInBloc bloc) => bloc.valid);
-
+    //final validToSubmit = context.select((SignInBloc bloc) => bloc.valid);
+    const validToSubmit = true;
+    final type = context.select((SignInBloc bloc) => bloc.state.privilege);
     return OutlinedButton(
       onPressed: validToSubmit
-          ? () {
-              context
-                  .read<SignInBloc>()
-                  .add(const SignInWithEmailAndPasswordRequested());
-            }
+          ? type == Privilege.provider
+              ? () {
+                  context.push(ProviderPage.path);
+                }
+              : () {
+                  context
+                      .read<SignInBloc>()
+                      .add(const SignInWithEmailAndPasswordRequested());
+                }
           : null,
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white,

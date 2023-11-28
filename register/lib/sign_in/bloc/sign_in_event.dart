@@ -65,3 +65,64 @@ class SignInPrivilageChanged extends SignInEvent {
   @override
   List<Object?> get props => [privilage];
 }
+
+class SignInPhoneChanged extends SignInEvent {
+  const SignInPhoneChanged(this.phone);
+
+  final String phone;
+
+  @override
+  List<Object?> get props => [phone];
+}
+
+class SignInAddressChanged extends SignInEvent {
+  const SignInAddressChanged(this.address);
+
+  final String address;
+
+  @override
+  List<Object?> get props => [address];
+}
+
+class SignInContactsChanged extends SignInEvent {
+  const SignInContactsChanged(this.contact);
+
+  final String contact;
+
+  @override
+  List<Object?> get props => [contact];
+}
+
+class SignInRutChanged extends SignInEvent {
+  const SignInRutChanged(this.rut);
+
+  final String rut;
+
+  @override
+  List<Object?> get props => [rut];
+}
+
+class SignInTypeChanged extends SignInEvent {
+  const SignInTypeChanged(this.type);
+
+  final String type;
+
+  @override
+  List<Object?> get props => [type];
+}
+
+class SignInPhonehanged extends SignInEvent {
+  const SignInPhonehanged(this.phone);
+
+  final String phone;
+
+  @override
+  List<Object?> get props => [phone];
+}
+
+class SignInDataChanged extends SignInEvent {
+  const SignInDataChanged();
+
+  @override
+  List<Object?> get props => [];
+}
