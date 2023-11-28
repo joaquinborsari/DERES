@@ -175,13 +175,18 @@ class LoginButton extends StatelessWidget {
     final validToSubmit = context.select((LoginBloc bloc) => bloc.valid);
 
     return OutlinedButton(
-      onPressed: validToSubmit
-          ? () {
-              context
-                  .read<LoginBloc>()
-                  .add(const LoginWithEmailAndPasswordRequested());
-            }
-          : null,
+      onPressed: () {
+        context
+            .read<LoginBloc>()
+            .add(const LoginWithEmailAndPasswordRequested());
+      },
+      // validToSubmit
+      //     ? () {
+      //         context
+      //             .read<LoginBloc>()
+      //             .add(const LoginWithEmailAndPasswordRequested());
+      //       }
+      //     : null,
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white,
         backgroundColor: Colors.orangeAccent,
