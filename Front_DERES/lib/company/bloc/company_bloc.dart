@@ -122,8 +122,8 @@ class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
         email: data['email'],
         address: data['address'] ?? '',
         phone: data['phone'],
-        rut: data['rut'],
-        score: data['score'] ?? 0,
+        rut: data['rut'].toString(),
+        score: data['score'] ?? '0',
         type: data['type'],
       );
       emit(state.copyWith(companyData: companyData));

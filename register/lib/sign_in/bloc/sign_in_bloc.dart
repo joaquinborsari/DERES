@@ -61,7 +61,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       final url = Uri.parse('http://172.178.74.246:8080/signup');
       if (state.privilege == Privilege.user) {
         final body = jsonEncode({
-          "user_name": state.email.value,
+          "name": state.email.value,
           "password": state.password.value,
           "privilege": state.privilege.name.toUpperCase(),
           "email": state.email.value,
@@ -74,7 +74,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
             headers: {'Content-Type': 'application/json'},
           );
 
-          if (response.statusCode == 202) {
+          if (response.statusCode == 201) {
             emit(state.copyWith(status: FormzSubmissionStatus.success));
           } else {
             emit(state.copyWith(status: FormzSubmissionStatus.failure));
